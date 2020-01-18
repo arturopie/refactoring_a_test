@@ -1,51 +1,5 @@
 require "bigdecimal"
 
-Address = Struct.new(:street, :city, :province, :postal_code, :country)
-Customer = Struct.new(:number, :name, :last_name, :percent_discount, :billing_address, :shipping_adress)
-Product = Struct.new(:number, :code, :unit_price)
-
-class LineItem
-  attr_accessor :invoice, :product, :quantity, :percent_discount
-
-  def initialize(invoice, product, quantity, percent_discount)
-    @invoice = invoice
-    @product = product
-    @quantity = quantity
-    @percent_discount = percent_discount
-  end
-
-  def unit_price
-    product.unit_price
-  end
-
-  def extended_price
-    (product.unit_price * quantity * (1 - discount)).round(2)
-  end
-
-  private
-
-  def discount
-    percent_discount / 100
-  end
-end
-
-class Invoice
-  attr_accessor :line_items
-
-  def initialize(customer)
-    @customer = customer
-    @line_items = []
-  end
-
-  def add_item_quantity(product, quantity)
-    @line_items << LineItem.new(self, product, quantity, customer.percent_discount)
-  end
-
-  private
-
-  attr_accessor :customer
-end
-
 RSpec.describe RefactoringATest do
   it "add_item_quantity several quantity v1" do
     billing_address = nil
