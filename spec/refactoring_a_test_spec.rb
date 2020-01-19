@@ -1,6 +1,21 @@
 require "bigdecimal"
 
 RSpec.describe RefactoringATest do
+  it "initialize a line item" do
+    billing_address = Address.new("1222 1st St SW", "Calgary", "Alberta", "T2N 2V2","Canada")
+    shipping_address = Address.new("1333 1st St SW", "Calgary", "Alberta", "T2N 2V2", "Canada")
+    customer = Customer.new(99, "John", "Doe", BigDecimal("30"), billing_address, shipping_address)
+    product = Product.new(88, "SomeWidget", BigDecimal("19.99"))
+    invoice = Invoice.new(customer)
+
+    item = LineItem.new(invoice, product, 10, 15)
+
+    expect(item.invoice).to eq(invoice)
+    expect(item.product).to eq(product)
+    expect(item.quantity).to eq(10)
+    expect(item.percent_discount).to eq(15)
+  end
+
   it "add_item_quantity several quantity v1" do
     billing_address = nil
     shipping_address = nil
