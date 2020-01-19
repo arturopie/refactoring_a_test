@@ -6,7 +6,7 @@ RSpec.describe RefactoringATest do
     shipping_address = Address.new("1333 1st St SW", "Calgary", "Alberta", "T2N 2V2", "Canada")
     customer = Customer.new(99, "John", "Doe", BigDecimal("30"), billing_address, shipping_address)
     product = Product.new(88, "SomeWidget", BigDecimal("19.99"))
-    invoice = Invoice.new(customer)
+    invoice = Invoice.new(customer: customer)
 
     item = LineItem.new(invoice, product, 10, 15)
 
@@ -17,19 +17,35 @@ RSpec.describe RefactoringATest do
   end
 
   it "add_item_quantity several quantity v1" do
-    billing_address = nil
-    shipping_address = nil
-    customer = nil
-    product = nil
-    invoice = nil
-
     begin
       # Set  up  fixture
-      billing_address = Address.new("1222 1st St SW", "Calgary", "Alberta", "T2N 2V2","Canada")
-      shipping_address = Address.new("1333 1st St SW", "Calgary", "Alberta", "T2N 2V2", "Canada")
-      customer = Customer.new(99, "John", "Doe", BigDecimal("30"), billing_address, shipping_address)
-      product = Product.new(88, "SomeWidget", BigDecimal("19.99"))
-      invoice = Invoice.new(customer)
+      billing_address = FactoryBot.create(
+        :address,
+        street: "1222 1st St SW" ,
+        city: "Calgary",
+        province: "Alberta",
+        postal_code: "T2N 2V2",
+        country: "Canada"
+      )
+      shipping_address = FactoryBot.create(
+        :address,
+        street: "1333 1st St SW",
+        city: "Calgary",
+        province: "Alberta",
+        postal_code: "T2N 2V2",
+        country: "Canada"
+      )
+      customer = FactoryBot.create(
+        :customer,
+        number: 99,
+        name: "John",
+        last_name: "Doe",
+        percent_discount: BigDecimal("30"),
+        billing_address: billing_address,
+        shipping_adress: shipping_address
+      )
+      product = FactoryBot.create(:product, number: 88, code: "SomeWidget", unit_price: BigDecimal("19.99"))
+      invoice = FactoryBot.create(:invoice, customer: customer)
 
       # Exercise  SUT
       invoice.add_item_quantity(product, 5)
@@ -49,11 +65,11 @@ RSpec.describe RefactoringATest do
       end
     ensure
       # Teardown
-      billing_address = nil
-      shipping_address = nil
-      customer = nil
-      product = nil
-      invoice = nil
+      DB.delete(billing_address)
+      DB.delete(shipping_address)
+      DB.delete(customer)
+      DB.delete(product)
+      DB.delete(invoice)
     end
   end
 end

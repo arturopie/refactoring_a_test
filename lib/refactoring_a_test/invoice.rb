@@ -1,7 +1,7 @@
 class Invoice
   attr_accessor :line_items
 
-  def initialize(customer)
+  def initialize(customer:)
     @customer = customer
     @line_items = []
   end

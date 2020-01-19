@@ -1,5 +1,6 @@
 require "refactoring_a_test/address"
 require "refactoring_a_test/customer"
+require "refactoring_a_test/db"
 require "refactoring_a_test/invoice"
 require "refactoring_a_test/invoice"
 require "refactoring_a_test/line_item"
