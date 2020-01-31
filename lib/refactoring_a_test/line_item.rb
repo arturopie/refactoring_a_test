@@ -20,6 +20,6 @@ class LineItem
   private
 
   def discount
-    percent_discount / 100
+    percent_discount / 100.0
   end
 end
