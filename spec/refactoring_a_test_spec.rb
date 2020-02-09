@@ -27,7 +27,7 @@ RSpec.describe RefactoringATest do
         last_name: "Doe",
         percent_discount: BigDecimal("30"),
         billing_address: billing_address,
-        shipping_adress: shipping_address
+        shipping_address: shipping_address
       )
       product = FactoryBot.create(:product, number: 88, code: "SomeWidget", unit_price: BigDecimal("19.99"))
       invoice = FactoryBot.create(:invoice, customer: customer)
