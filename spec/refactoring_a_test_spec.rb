@@ -1,3 +1,5 @@
+require "bigdecimal"
+
 RSpec.describe RefactoringATest do
   it "add_item_quantity several quantity v1" do
     # Set  up  fixture
@@ -22,11 +24,11 @@ RSpec.describe RefactoringATest do
       number: 99,
       name: "John",
       last_name: "Doe",
-      percent_discount: 30,
+      percent_discount: BigDecimal("30"),
       billing_address: billing_address,
       shipping_adress: shipping_address
     )
-    product = FactoryBot.create(:product, number: 88, code: "SomeWidget", unit_price: 20)
+    product = FactoryBot.create(:product, number: 88, code: "SomeWidget", unit_price: BigDecimal("19.99"))
     invoice = FactoryBot.create(:invoice, customer: customer)
 
     # Exercise  SUT
@@ -40,8 +42,8 @@ RSpec.describe RefactoringATest do
       expect(item.product).to eq(product)
       expect(item.quantity).to eq(5)
       expect(item.percent_discount).to eq(30)
-      expect(item.unit_price).to eq(20)
-      expect(item.extended_price).to eq(70)
+      expect(item.unit_price).to eq(BigDecimal("19.99"))
+      expect(item.extended_price).to eq(BigDecimal("69.97"))
     else
       expect(false).to eq(true)
     end
